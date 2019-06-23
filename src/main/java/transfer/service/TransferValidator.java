@@ -28,7 +28,6 @@ class TransferValidator {
         if(accountFrom.getBalance() != null && amount != null &&
                 accountFrom.getBalance().subtract(amount).doubleValue() < 0)
             return false;
-
         return true;
     }
 }
