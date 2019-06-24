@@ -11,7 +11,7 @@ import java.sql.Connection;
 @NoArgsConstructor
 class TransferValidator {
 
-    boolean validate(Connection conn, AccountDao accountDao, TransferDto transferDto) {
+    void validate(Connection conn, AccountDao accountDao, TransferDto transferDto) throws TransferException {
         String fromId = transferDto.getFromAccountId();
         String toId = transferDto.getToAccountId();
         BigDecimal amount = transferDto.getAmount();
@@ -20,14 +20,10 @@ class TransferValidator {
         Account accountTo = accountDao.find(conn, toId);
 
         if(null == accountFrom)
-            return false;
+            throw new TransferException("Sender is not found");
         if(null == accountTo)
-            return false;
-        if(amount != null && amount.doubleValue() <= 0)
-            return false;
-        if(accountFrom.getBalance() != null && amount != null &&
-                accountFrom.getBalance().subtract(amount).doubleValue() < 0)
-            return false;
-        return true;
+            throw new TransferException("Recipient is not found");
+        if (accountFrom.getBalance() != null && accountFrom.getBalance().subtract(amount).doubleValue() < 0)
+            throw new TransferException("Not enough money on the sender account");
     }
 }

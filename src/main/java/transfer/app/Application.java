@@ -6,6 +6,8 @@ import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
+import org.glassfish.jersey.server.validation.ValidationFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 import transfer.config.ApplicationConfig;
 import transfer.config.TransferModule;
@@ -80,6 +82,8 @@ public class Application {
 
     private static ServletContainer servlet(Injector injector) {
         return new ServletContainer(ResourceConfig.forApplicationClass(ApplicationConfig.class)
+                .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true)
+                .register(ValidationFeature.class)
                 .register(injector.getInstance(AccountController.class))
                 .register(injector.getInstance(TransferController.class)));
     }

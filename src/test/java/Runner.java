@@ -1,5 +1,6 @@
 import lombok.AllArgsConstructor;
 import transfer.dto.TransferDto;
+import transfer.service.TransferException;
 import transfer.service.TransferService;
 
 public class Runner {
@@ -18,7 +19,11 @@ class TransferRunner implements Runnable{
     @Override
     public void run() {
         System.out.println("START : " + Thread.currentThread());
-        transferService.transfer(transferDto);
+        try {
+            transferService.transfer(transferDto);
+        } catch (TransferException e) {
+            e.printStackTrace();
+        }
         System.out.println("STOP : " + Thread.currentThread());
     }
 }

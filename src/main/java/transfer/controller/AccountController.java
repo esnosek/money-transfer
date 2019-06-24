@@ -5,6 +5,8 @@ import transfer.dto.AccountDto;
 import transfer.model.Account;
 import transfer.service.AccountService;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -24,7 +26,8 @@ public class AccountController {
 
     @POST
     @Path("/")
-    public AccountDto createAccount(AccountDto accountDto) {
+    @Valid
+    public AccountDto createAccount(@Valid AccountDto accountDto) {
         Account account = accountService.create(accountDto);
         return AccountDto.builder()
                 .accountId(account.getAccountId())
@@ -34,7 +37,8 @@ public class AccountController {
 
     @GET
     @Path("/{id}")
-    public AccountDto getAccount(@PathParam("id") String id) {
+    @Valid
+    public AccountDto getAccount(@NotNull(message="accountId cannot be null") @PathParam("id") String id) {
         Account account = accountService.find(id);
         return AccountDto.builder()
                 .accountId(account.getAccountId())
@@ -44,6 +48,7 @@ public class AccountController {
 
     @GET
     @Path("/")
+    @Valid
     public List<AccountDto> getAccounts() {
         List<Account> accounts = accountService.findAll();
         return accounts.stream()
