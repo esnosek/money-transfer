@@ -4,69 +4,43 @@ import com.google.inject.Inject;
 import transfer.dao.AccountDao;
 import transfer.dto.AccountDto;
 import transfer.model.Account;
+import transfer.service.exceptions.AccountException;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
 import static transfer.config.ConnectionPool.getConnection;
 
 public class AccountService {
 
-    private final AccountDao accountDao;
+  private final AccountDao accountDao;
 
-    @Inject
-    public AccountService(AccountDao accountDao){
-        this.accountDao = accountDao;
-    }
+  @Inject
+  public AccountService(AccountDao accountDao) {
+    this.accountDao = accountDao;
+  }
 
-    public Account create(AccountDto accountDto) {
-        Account account = null;
-        try(Connection conn = getConnection()){
-            account = accountDao.create(conn, accountDto);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return account;
+  public Account create(AccountDto accountDto) throws AccountException {
+    try (Connection conn = getConnection()) {
+      return accountDao.create(conn, accountDto);
+    } catch (Exception e) {
+      throw new AccountException("Unexpected exception when creating the account", e);
     }
+  }
 
-    public List<Account> findAll() {
-        List<Account> accounts = new LinkedList<>();
-        try(Connection conn = getConnection()){
-            accounts = accountDao.findAll(conn);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return accounts;
+  public List<Account> findAll() throws AccountException {
+    try (Connection conn = getConnection()) {
+      return accountDao.findAll(conn);
+    } catch (Exception e) {
+      throw new AccountException("Unexpected exception when retrieving accounts", e);
     }
+  }
 
-    public Account find(String id) {
-        Account account = null;
-        try(Connection conn = getConnection()){
-            account = accountDao.find(conn, id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return account;
+  public Account find(String id) throws AccountException {
+    try (Connection conn = getConnection()) {
+      return accountDao.find(conn, id);
+    } catch (Exception e) {
+      throw new AccountException("Unexpected exception when retrieving the account: " + id, e);
     }
-
-    public void updateBalance(String id, BigDecimal newBalance){
-        try(Connection conn = getConnection()){
-            accountDao.updateBalance(conn, id, newBalance);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public BigDecimal getBalance(String id) {
-        BigDecimal balance = null;
-        try(Connection conn = getConnection()){
-            balance = accountDao.getBalance(conn, id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return balance;
-    }
+  }
 }

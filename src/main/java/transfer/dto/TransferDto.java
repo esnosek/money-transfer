@@ -17,15 +17,17 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class TransferDto {
 
-    @NotNull(message="From account must not be null")
-    private String fromAccountId;
+  @NotNull(message = "From account must not be null")
+  private String fromAccountId;
 
-    @NotNull(message="To account must not be null")
-    private String toAccountId;
+  @NotNull(message = "To account must not be null")
+  private String toAccountId;
 
-    @NotNull(message="Transfer amount cannot be null")
-    @DecimalMin(value="0.01",  message = "Transfer value should be positive number")
-    @DecimalMax(value="1000000.00",  message = "Transfer value is must not be larger than one million")
-    @Digits(integer = 7, fraction = 2, message = "Incorrect balance value")
-    private BigDecimal amount;
+  @NotNull(message = "Transfer amount cannot be null")
+  @DecimalMin(value = "0.01", message = "Transfer value should be positive number")
+  @DecimalMax(
+      value = "1000000.00",
+      message = "Transfer value is must not be larger than one million")
+  @Digits(integer = 7, fraction = 2, message = "Incorrect balance value")
+  private BigDecimal amount;
 }

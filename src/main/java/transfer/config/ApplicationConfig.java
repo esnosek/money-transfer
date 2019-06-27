@@ -1,19 +1,20 @@
 package transfer.config;
 
-import org.glassfish.jersey.server.ServerProperties;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
-import javax.ws.rs.core.Application;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
 
-public class ApplicationConfig extends Application {
+public class ApplicationConfig {
 
-    @Override
-    public Map<String, Object> getProperties() {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
-        properties.put("jersey.config.server.provider.packages", "transfer.controller");
-        properties.put("jersey.config.server.provider.classnames", "org.glassfish.jersey.jackson.JacksonFeature");
-        return properties;
+  public static Configuration getConfig() {
+    Configuration config = null;
+    try {
+      config = new Configurations().properties(new File("application.properties"));
+    } catch (ConfigurationException e) {
+      e.printStackTrace();
     }
+    return config;
+  }
 }
