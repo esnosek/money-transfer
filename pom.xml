@@ -11,7 +11,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <tomcat.version>9.0.12</tomcat.version>
+        <tomcat.version>10.0.4</tomcat.version>
         <jersey.version>2.28</jersey.version>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <skip.unit.tests>false</skip.unit.tests>
